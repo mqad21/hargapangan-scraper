@@ -21,14 +21,12 @@ export default (date) => {
     {},
     cliProgress.Presets.shades_classic
   );
-  progressBar.start(100, 0);
+  progressBar.start(102, 0);
 
   return new Promise(async (resolve, reject) => {
     try {
       const browser = await puppeteer.launch({
-        headless: false,
-        args: ["--disable-setuid-sandbox"],
-        ignoreHTTPSErrors: true,
+        // headless: false,
       });
 
       const url = "https://hargapangan.id";
@@ -40,7 +38,6 @@ export default (date) => {
       const priceTypeId = "price_type_id";
       const commodityOptions = await getSelectOptions(page, commodityId);
       const priceTypeOptions = await getSelectOptions(page, priceTypeId);
-      resolve(priceTypeOptions);
       //   Perulangan kombinasi options.
       const dateId = "date";
       let result = [];
@@ -58,6 +55,7 @@ export default (date) => {
 
       let i = 1;
       const length = commodityOptions.length * priceTypeOptions.length;
+      progressBar.setTotal(length);
 
       for (const commodity of commodityOptions) {
         await page.waitForSelector(
@@ -112,7 +110,7 @@ export default (date) => {
           result.push(data);
         }
       }
-
+      await browser.close();
       resolve(result.flat());
     } catch (e) {
       reject(e);

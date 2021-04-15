@@ -20,10 +20,12 @@ const range = [...Array(diffDays).keys()];
     try {
       let date = new Date(startDate);
       date.setDate(date.getDate() + i);
+      console.log("--------------------");
       const data = await getData(date);
+      console.log("");
       console.log("Menyimpan dalam csv...");
-      const csv = new ObjectsToCsv(data, { append: true });
-      await csv.toDisk("./" + fileName + ".csv");
+      const csv = new ObjectsToCsv(data);
+      await csv.toDisk("./" + fileName + ".csv", { append: true });
       console.log("Selesai :)");
     } catch (e) {
       console.error("Terdapat kesalahan: ", e);
