@@ -40,7 +40,6 @@ export default (date) => {
       const priceTypeId = "price_type_id";
       const commodityOptions = await getSelectOptions(page, commodityId);
       const priceTypeOptions = await getSelectOptions(page, priceTypeId);
-      resolve(priceTypeOptions);
       //   Perulangan kombinasi options.
       const dateId = "date";
       let result = [];
@@ -112,7 +111,7 @@ export default (date) => {
           result.push(data);
         }
       }
-
+      await browser.close();
       resolve(result.flat());
     } catch (e) {
       reject(e);
