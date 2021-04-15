@@ -21,14 +21,12 @@ export default (date) => {
     {},
     cliProgress.Presets.shades_classic
   );
-  progressBar.start(100, 0);
+  progressBar.start(102, 0);
 
   return new Promise(async (resolve, reject) => {
     try {
       const browser = await puppeteer.launch({
-        headless: false,
-        args: ["--disable-setuid-sandbox"],
-        ignoreHTTPSErrors: true,
+        // headless: false,
       });
 
       const url = "https://hargapangan.id";
@@ -57,6 +55,7 @@ export default (date) => {
 
       let i = 1;
       const length = commodityOptions.length * priceTypeOptions.length;
+      progressBar.setTotal(length);
 
       for (const commodity of commodityOptions) {
         await page.waitForSelector(
